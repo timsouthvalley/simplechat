@@ -6,3 +6,53 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.main-container {
+  height: 100vh;
+  display: flex !important;  
+  flex-direction: column;
+}
+
+.input-paper {
+  margin: 20px;
+  padding: 2px 4px;
+  display: flex;
+  alignItems: center;
+  flex: none;
+}
+
+.input {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.messages-paper {
+  margin: 0 20px;
+  padding: 2px 4px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  overflow: auto;
+  flex: 2;
+}
+
+.divider {
+  height: 28px;
+  margin: 4px;
+}
+
+.icon-button {
+  padding: 10px;
+}
+
+.chat-list {
+  width: 100%;
+}
+
+.list-item {
+  display: flex;
+}
+
+.own {
+  order: 2;
+}

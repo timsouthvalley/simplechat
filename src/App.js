@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState, useRef } from 'react'
 import SendIcon from '@material-ui/icons/Send';
 import { 
   Container,
@@ -9,19 +8,26 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  Avatar,
+  ListItemAvatar,
 } from '@material-ui/core';
 
 const App = () => {
-  const [message, setMessage] = useState("");
+  const [clientId, setClientId] = useState(performance.now());
+  const [name, setName] = useState('');
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(false);
+  const scrollend = useRef();
   
   useEffect(() => {
     const socket = new WebSocket('wss://buster:3030');
     
     socket.addEventListener('message', (e) => {
-      setMessages((a) => [e.data, ...a]);
+      const data = JSON.parse(e.data);
+      setMessages((a) => [...a, data]);
+      scrollend.current.scrollIntoView({ behavior: 'smooth' });
     });
     
     socket.addEventListener('close', (e) => {
@@ -30,70 +36,55 @@ const App = () => {
     
     setSocket(socket);
   }, []);
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      margin: '20px',
-      padding: '2px 4px',
-      display: 'flex',
-      alignItems: 'center',
-      width: 400,
-    },
-    input: {
-      marginLeft: theme.spacing(1),
-      flex: 1,
-    },
-    iconButton: {
-      padding: 10,
-    },
-    divider: {
-      height: 28,
-      margin: 4,
-    },
-    messages: {
-      margin: '20px',
-      padding: '2px 4px',
-      display: 'flex',
-      alignItems: 'center',
-      width: 400,
-      position: 'relative',
-      overflow: 'auto',
-      maxHeight: 500,
-    }
-  }));
-  const classes = useStyles();
   const sendMesage = (e) => {
       e.preventDefault();
-      if (message === "" || !socket) return;
-      socket.send(message);
-      setMessage("");
+      if (message === '' || !socket) return;
+      socket.send(JSON.stringify({
+        name,
+        message,
+        clientId
+      }));
+      setMessage('');
   }
   return (
-    <Container fixed>
-      <Paper component="form" className={classes.root} onSubmit={sendMesage}>
+    <Container fixed className='main-container'>
+      <Paper className='input-paper'>
         <InputBase 
-          value={message}
-          onChange={e => setMessage(e.target.value)} 
-          className={classes.input} 
-          placeholder="Enter something to chat"
+          value={name}
+          onChange={e => setName(e.target.value)} 
+          className='input' 
+          placeholder='Enter your name'
         />
-        <Divider className={classes.divider} orientation="vertical" />
-        <IconButton type="submit" className={classes.iconButton}>
-          <SendIcon />
-        </IconButton>
       </Paper>
-      <Paper className={classes.messages} >
-        <List>
+      <Paper className='messages-paper' >
+        <List className='chat-list'>
           {messages.map((m, k) => 
-            <ListItem key={k}>
-              <ListItemText primary={m} />
+            <ListItem className='list-item' key={k}>
+              <ListItemAvatar className={clientId === m.clientId ? 'own' : ''}>
+                <Avatar>{m.name.substring(0,1).toUpperCase()}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={m.message} />
             </ListItem>
           )}
           {messages.length === 0 && (
             <ListItem>
-              <ListItemText secondary="The chat messages will be shown here" />
+              <ListItemText secondary='The chat messages will be shown here' />
             </ListItem>
           )}
+          <div ref={scrollend} />
         </List>
+      </Paper>
+      <Paper component='form' className='input-paper' onSubmit={sendMesage}>
+        <InputBase 
+          value={message}
+          onChange={e => setMessage(e.target.value)} 
+          className='input'
+          placeholder='Enter something to chat'
+        />
+        <Divider className='divider' orientation='vertical' />
+        <IconButton type='submit' className='icon-button'>
+          <SendIcon />
+        </IconButton>
       </Paper>
     </Container>
   );
