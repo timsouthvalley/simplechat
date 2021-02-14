@@ -22,7 +22,8 @@ const App = () => {
   const scrollend = useRef();
   
   useEffect(() => {
-    const socket = new WebSocket('wss://buster:3030');
+    const socketLocation = process.env.REACT_APP_SOCKET_SERVER || '';
+    const socket = new WebSocket(`wss://${socketLocation}`);
     
     socket.addEventListener('message', (e) => {
       const data = JSON.parse(e.data);
