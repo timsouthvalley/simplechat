@@ -14,7 +14,10 @@ import {
 } from '@material-ui/core';
 
 const App = () => {
-  const [clientId, setClientId] = useState(performance.now());
+  const localClientId = localStorage.getItem('clientId');
+  if (!localClientId) localStorage.setItem('clientId', performance.now());
+  
+  const [clientId, setClientId] = useState(localClientId);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -27,14 +30,19 @@ const App = () => {
     
     socket.addEventListener('message', (e) => {
       const data = JSON.parse(e.data);
-      setMessages((a) => [...a, data]);
+
+      if (Array.isArray(data)) {
+        setMessages(data);
+      } else {
+        setMessages((a) => [...a, data]);
+      }
       scrollend.current.scrollIntoView({ behavior: 'smooth' });
     });
-    
+
     socket.addEventListener('close', (e) => {
       setSocket(false);
     });
-    
+
     setSocket(socket);
   }, []);
   const sendMesage = (e) => {

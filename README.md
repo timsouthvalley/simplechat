@@ -5,6 +5,7 @@
 To install the application, use:
 
 ```.bash
+nvm use
 npm ci
 ```
 
@@ -47,7 +48,7 @@ This will generate a build of the react app into `./build` - this can then be de
 1. √Get a socket server working
 2. √Get client to connect - generate client.
 3. Send create chat
-4. Save chat, save perhaps ten messages
+4. √Save chat, save perhaps ten messages
 5. √List chats.
 6. √Write to chat
 7. √Print out chats.
@@ -55,3 +56,4 @@ This will generate a build of the react app into `./build` - this can then be de
 9. Add chat indent.
 10. Separate out the server from the react app for better deployment.
 11. More messages for setting user details etc.
+12. Add help docs.
