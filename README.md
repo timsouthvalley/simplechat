@@ -45,15 +45,18 @@ This will generate a build of the react app into `./build` - this can then be de
 
 ### Todo list
 
-1. √Get a socket server working
-2. √Get client to connect - generate client.
-3. Send create chat
-4. √Save chat, save perhaps ten messages
-5. √List chats.
-6. √Write to chat
-7. √Print out chats.
-8. Reconnect the socket
-9. Add chat indent.
-10. Separate out the server from the react app for better deployment.
-11. More messages for setting user details etc.
-12. Add help docs.
+- [x] Get a socket server working
+- [x] Get client to connect - generate client
+- [ ] Send create chat
+- [ ] Add tests
+- [x] Save chat, save perhaps ten messages
+- [x] List chats
+- [x] Write to chat
+- [x] Print out chats
+- [x] Add a client id, save
+- [ ] Reconnect the socket
+- [ ] Add chat indent
+- [ ] Separate out the server from the react app for better deployment.
+- [ ] More messages for setting user details etc
+- [ ] Add code doc
+
