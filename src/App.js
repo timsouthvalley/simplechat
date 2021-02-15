@@ -22,7 +22,7 @@ const App = () => {
   const scrollend = useRef();
   
   useEffect(() => {
-    const socketLocation = process.env.REACT_APP_SOCKET_SERVER || '';
+    const socketLocation = process.env.REACT_APP_SOCKET_SERVER || window.location.host;
     const socket = new WebSocket(`wss://${socketLocation}`);
     
     socket.addEventListener('message', (e) => {
