@@ -14,7 +14,7 @@ const httpServer = https.createServer({
   res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
   res.setHeader("Access-Control-Allow-Headers", "*");
   
-  return handler(req, res, { public: "" });
+  return handler(req, res, { public: "./build" });
   
 }).listen(PORT);
 
